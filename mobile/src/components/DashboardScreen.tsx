@@ -51,7 +51,12 @@ export function DashboardScreen() {
 
   const handleManualRefresh = async () => {
     // Force refresh bypassing 30-minute check
-    await refetch({ throwOnError: false });
+    try {
+      await refetch();
+    } catch (error) {
+      // Error is handled by React Query, we just need to catch it
+      console.error('Refresh error:', error);
+    }
     const timestamp = await getLastRefreshAt();
     setLastRefreshAt(timestamp);
   };

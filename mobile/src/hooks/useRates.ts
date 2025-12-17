@@ -1,14 +1,30 @@
-import { useRef } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRef, useState, useEffect } from 'react';
+import { useQuery, useQueryClient, UseQueryResult } from '@tanstack/react-query';
 import { fetchRates } from '@/services/api';
 import { saveLastRates, getLastRates, getLastRefreshAt, shouldRefresh } from '@/utils/storage';
 import { RatesResponse } from '@/types';
 
 const THIRTY_MINUTES_MS = 30 * 60 * 1000;
 
-export function useRates() {
+export function useRates(): UseQueryResult<RatesResponse, Error> & {
+  refetch: () => Promise<UseQueryResult<RatesResponse, Error>>;
+} {
   const queryClient = useQueryClient();
   const manualRefreshRef = useRef(false);
+  const [placeholderData, setPlaceholderData] = useState<RatesResponse | undefined>(undefined);
+
+  // Load cached data for placeholder on mount
+  useEffect(() => {
+    let mounted = true;
+    getLastRates().then(data => {
+      if (mounted && data) {
+        setPlaceholderData(data);
+      }
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const query = useQuery<RatesResponse, Error>({
     queryKey: ['rates'],
@@ -22,6 +38,8 @@ export function useRates() {
         manualRefreshRef.current = false;
         const rates = await fetchRates();
         await saveLastRates(rates);
+        // Update placeholder data
+        setPlaceholderData(rates);
         return rates;
       }
 
@@ -33,6 +51,8 @@ export function useRates() {
       // Otherwise, fetch fresh data
       const rates = await fetchRates();
       await saveLastRates(rates);
+      // Update placeholder data
+      setPlaceholderData(rates);
       return rates;
     },
     // Refetch every 30 minutes while app is in foreground
@@ -44,22 +64,16 @@ export function useRates() {
     // Avoid aggressive retries to prevent hitting Binance too often
     retry: 0,
     // Use cached data as placeholder for instant display
-    placeholderData: async () => {
-      return await getLastRates();
-    },
-    placeholderDataUpdatedAt: async () => {
-      const lastRefreshAt = await getLastRefreshAt();
-      return lastRefreshAt || 0;
-    },
+    placeholderData: placeholderData,
   });
 
   // Override refetch to support manual refresh
   const originalRefetch = query.refetch;
-  const manualRefetch = async () => {
+  const manualRefetch = async (): Promise<UseQueryResult<RatesResponse, Error>> => {
     manualRefreshRef.current = true;
     // Invalidate to force refetch regardless of staleTime
     await queryClient.invalidateQueries({ queryKey: ['rates'] });
-    return originalRefetch();
+    return originalRefetch() as Promise<UseQueryResult<RatesResponse, Error>>;
   };
 
   return {
