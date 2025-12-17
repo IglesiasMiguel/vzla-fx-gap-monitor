@@ -2,13 +2,17 @@ import { View, Text } from 'react-native';
 import { RatesResponse } from '@/types';
 import { getLastRates } from '@/utils/storage';
 import { useEffect, useState } from 'react';
+import { Language } from '@/hooks/useLanguage';
+import { translations } from '@/hooks/useLanguage';
 
 interface WidgetPreviewProps {
   rates?: RatesResponse | null;
+  language: Language;
 }
 
-export function WidgetPreview({ rates }: WidgetPreviewProps) {
+export function WidgetPreview({ rates, language }: WidgetPreviewProps) {
   const [localRates, setLocalRates] = useState<RatesResponse | null>(rates || null);
+  const t = translations[language].widgetPreview;
 
   useEffect(() => {
     if (!rates) {
@@ -21,10 +25,8 @@ export function WidgetPreview({ rates }: WidgetPreviewProps) {
   if (!displayRates) {
     return (
       <View className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
-        <Text className="text-slate-600 dark:text-slate-400 text-sm mb-4">Widget Preview</Text>
-        <Text className="text-slate-500 dark:text-slate-400 text-center">
-          No data available. Open the app to fetch rates.
-        </Text>
+        <Text className="text-slate-600 dark:text-slate-400 text-sm mb-4">{t.widgetPreview}</Text>
+        <Text className="text-slate-500 dark:text-slate-400 text-center">{t.noDataAvailable}</Text>
       </View>
     );
   }
@@ -39,7 +41,7 @@ export function WidgetPreview({ rates }: WidgetPreviewProps) {
   return (
     <View className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
       <Text className="text-slate-600 dark:text-slate-400 text-xs mb-4">
-        Widget Preview (This is how it will look on your home screen)
+        {t.widgetPreview} ({t.howItWillLook})
       </Text>
       <View className="flex-row justify-between items-center">
         <View className="flex-1">

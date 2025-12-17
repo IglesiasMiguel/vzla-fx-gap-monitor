@@ -5,6 +5,7 @@ const STORAGE_KEYS = {
   LAST_RATES: '@vzla_fx_monitor:last_rates',
   LAST_REFRESH_AT: '@vzla_fx_monitor:last_refresh_at',
   DISPLAY_MODE: '@vzla_fx_monitor:display_mode',
+  LANGUAGE: '@vzla_fx_monitor:language',
 } as const;
 
 const THIRTY_MINUTES_MS = 30 * 60 * 1000;
@@ -58,5 +59,23 @@ export async function getDisplayMode(): Promise<'purchasing_power' | 'gap_spread
   } catch (error) {
     console.error('Error getting display mode:', error);
     return 'purchasing_power';
+  }
+}
+
+export async function saveLanguage(language: 'es' | 'en'): Promise<void> {
+  try {
+    await AsyncStorage.setItem(STORAGE_KEYS.LANGUAGE, language);
+  } catch (error) {
+    console.error('Error saving language:', error);
+  }
+}
+
+export async function getLanguage(): Promise<'es' | 'en'> {
+  try {
+    const language = await AsyncStorage.getItem(STORAGE_KEYS.LANGUAGE);
+    return (language as 'es' | 'en') || 'en';
+  } catch (error) {
+    console.error('Error getting language:', error);
+    return 'en';
   }
 }

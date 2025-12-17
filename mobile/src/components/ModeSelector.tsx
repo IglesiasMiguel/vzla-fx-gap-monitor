@@ -1,16 +1,21 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { DisplayMode } from '@/types';
+import { Language } from '@/hooks/useLanguage';
+import { translations } from '@/hooks/useLanguage';
 
 interface ModeSelectorProps {
   selectedMode: DisplayMode;
   onModeChange: (mode: DisplayMode) => void;
+  language: Language;
 }
 
-export function ModeSelector({ selectedMode, onModeChange }: ModeSelectorProps) {
+export function ModeSelector({ selectedMode, onModeChange, language }: ModeSelectorProps) {
+  const t = translations[language].modeSelector;
+
   return (
     <View className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-lg">
       <Text className="text-slate-600 dark:text-slate-400 text-sm font-medium mb-3">
-        Display Mode
+        {t.displayMode}
       </Text>
       <View className="flex-row gap-2">
         <TouchableOpacity
@@ -28,7 +33,7 @@ export function ModeSelector({ selectedMode, onModeChange }: ModeSelectorProps) 
                 : 'text-slate-700 dark:text-slate-300'
             }`}
           >
-            Purchasing Power
+            {t.purchasingPower}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -44,14 +49,12 @@ export function ModeSelector({ selectedMode, onModeChange }: ModeSelectorProps) 
               selectedMode === 'gap_spread' ? 'text-white' : 'text-slate-700 dark:text-slate-300'
             }`}
           >
-            Gap Spread
+            {t.gapSpread}
           </Text>
         </TouchableOpacity>
       </View>
       <Text className="text-slate-500 dark:text-slate-400 text-xs mt-2">
-        {selectedMode === 'purchasing_power'
-          ? 'Shows what percentage of purchasing power you have with BCV vs Binance'
-          : 'Shows how much more expensive the parallel market is compared to BCV'}
+        {selectedMode === 'purchasing_power' ? t.purchasingPowerDesc : t.gapSpreadDesc}
       </Text>
     </View>
   );
