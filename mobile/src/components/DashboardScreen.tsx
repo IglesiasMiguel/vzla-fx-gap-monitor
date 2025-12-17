@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
-import { View, Text, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  RefreshControl,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import { useRates } from '@/hooks/useRates';
 import { RateCard } from './RateCard';
 import { GapIndicator } from './GapIndicator';
@@ -7,6 +14,10 @@ import { ModeSelector } from './ModeSelector';
 import { WidgetPreview } from './WidgetPreview';
 import { getDisplayMode, saveDisplayMode, getLastRefreshAt } from '@/utils/storage';
 import { DisplayMode } from '@/types';
+
+interface DashboardScreenProps {
+  onShowDocumentation: () => void;
+}
 
 const THIRTY_MINUTES_MS = 30 * 60 * 1000;
 
@@ -23,7 +34,7 @@ function formatNextRefreshTime(lastRefreshAt: number | null): string {
   return `In ${minutes} minute${minutes !== 1 ? 's' : ''}`;
 }
 
-export function DashboardScreen() {
+export function DashboardScreen({ onShowDocumentation }: DashboardScreenProps) {
   const { data: rates, isLoading, error, refetch, isRefetching } = useRates();
   const [displayMode, setDisplayMode] = useState<DisplayMode>('purchasing_power');
   const [lastRefreshAt, setLastRefreshAt] = useState<number | null>(null);
@@ -97,9 +108,15 @@ export function DashboardScreen() {
       refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={handleManualRefresh} />}
     >
       <View className="p-4 pt-12">
-        <Text className="text-3xl font-bold text-slate-900 dark:text-white mb-1">
-          Vzla FX Monitor
-        </Text>
+        <View className="flex-row items-center justify-between mb-1">
+          <Text className="text-3xl font-bold text-slate-900 dark:text-white">Vzla FX Monitor</Text>
+          <TouchableOpacity
+            onPress={onShowDocumentation}
+            className="bg-slate-100 dark:bg-slate-700 px-3 py-2 rounded-lg"
+          >
+            <Text className="text-slate-700 dark:text-slate-300 text-sm font-medium">ℹ️ Ayuda</Text>
+          </TouchableOpacity>
+        </View>
         <View className="mb-6">
           <Text className="text-slate-500 dark:text-slate-400 text-sm">
             Last update:{' '}
