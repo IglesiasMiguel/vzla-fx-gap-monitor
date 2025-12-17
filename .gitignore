@@ -1,0 +1,12 @@
+node_modules/
+.expo/
+dist/
+.env
+.env.local
+*.jks
+*.keystore
+*.p12
+credentials.json
+google-services.json
+GoogleService-Info.plist
+SPECIFICATION.md

@@ -1,0 +1,7 @@
+name = "vzla-fx-gap-monitor"
+main = "src/index.ts"
+compatibility_date = "2024-12-16"
+
+[env.production]
+name = "vzla-fx-gap-monitor"
+

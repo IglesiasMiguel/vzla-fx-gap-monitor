@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "Vzla FX Monitor",
+    "slug": "vzla-fx-monitor",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.vzlafxmonitor",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "react-native-android-widget",
+        {
+          "widgets": [
+            {
+              "name": "GapWidget",
+              "label": "Vzla FX Monitor",
+              "minWidth": "320dp",
+              "minHeight": "120dp",
+              "updatePeriodMillis": 1800000,
+              "description": "Monitor BCV and Binance exchange rates"
+            }
+          ]
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "cbc7e1ab-0f3f-4b7a-b49d-ff2a961cb461"
+      }
+    }
+  }
+}

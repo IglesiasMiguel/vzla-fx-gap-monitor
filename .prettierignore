@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.expo/
+build/
+*.log
+coverage/
+.nyc_output/
+*.jks
+*.keystore
+*.p12
+
