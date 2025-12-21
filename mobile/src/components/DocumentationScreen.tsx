@@ -1,20 +1,17 @@
-import { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-
-type Language = 'es' | 'en';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface DocumentationScreenProps {
   onBack: () => void;
 }
 
 export function DocumentationScreen({ onBack }: DocumentationScreenProps) {
-  const [language, setLanguage] = useState<Language>('es');
+  const { language } = useLanguage();
 
   const t = {
     es: {
       title: 'Documentación',
       back: 'Volver',
-      language: 'Idioma',
       introduction: {
         title: '¿Qué es el Gap?',
         content:
@@ -112,7 +109,6 @@ export function DocumentationScreen({ onBack }: DocumentationScreenProps) {
     en: {
       title: 'Documentation',
       back: 'Back',
-      language: 'Language',
       introduction: {
         title: 'What is the Gap?',
         content:
@@ -215,7 +211,7 @@ export function DocumentationScreen({ onBack }: DocumentationScreenProps) {
     <View className="flex-1 bg-slate-50 dark:bg-slate-900">
       {/* Header */}
       <View className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 pt-12 pb-4">
-        <View className="flex-row items-center justify-between mb-4">
+        <View className="flex-row items-center justify-between">
           <TouchableOpacity
             onPress={onBack}
             className="bg-slate-100 dark:bg-slate-700 px-4 py-2 rounded-lg"
@@ -224,41 +220,6 @@ export function DocumentationScreen({ onBack }: DocumentationScreenProps) {
           </TouchableOpacity>
           <Text className="text-2xl font-bold text-slate-900 dark:text-white">{content.title}</Text>
           <View className="w-20" />
-        </View>
-
-        {/* Language Selector */}
-        <View className="flex-row gap-2">
-          <Text className="text-slate-600 dark:text-slate-400 text-sm font-medium self-center">
-            {content.language}:
-          </Text>
-          <TouchableOpacity
-            onPress={() => setLanguage('es')}
-            className={`flex-1 py-2 px-4 rounded-lg ${
-              language === 'es' ? 'bg-blue-600 dark:bg-blue-500' : 'bg-slate-100 dark:bg-slate-700'
-            }`}
-          >
-            <Text
-              className={`text-center font-medium ${
-                language === 'es' ? 'text-white' : 'text-slate-700 dark:text-slate-300'
-              }`}
-            >
-              Español
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setLanguage('en')}
-            className={`flex-1 py-2 px-4 rounded-lg ${
-              language === 'en' ? 'bg-blue-600 dark:bg-blue-500' : 'bg-slate-100 dark:bg-slate-700'
-            }`}
-          >
-            <Text
-              className={`text-center font-medium ${
-                language === 'en' ? 'text-white' : 'text-slate-700 dark:text-slate-300'
-              }`}
-            >
-              English
-            </Text>
-          </TouchableOpacity>
         </View>
       </View>
 

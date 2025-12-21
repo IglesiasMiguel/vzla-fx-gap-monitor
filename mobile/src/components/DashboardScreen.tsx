@@ -146,7 +146,7 @@ export function DashboardScreen({ onShowDocumentation }: DashboardScreenProps) {
             </View>
             <TouchableOpacity
               onPress={onShowDocumentation}
-              className="bg-slate-100 dark:bg-slate-700 px-3 py-2 rounded-lg"
+              className="bg-slate-100 dark:bg-slate-700 px-3 py-2 rounded-lg min-w-[80px] items-center justify-center"
             >
               <Text className="text-slate-700 dark:text-slate-300 text-sm font-medium">
                 {t.dashboard.help}
