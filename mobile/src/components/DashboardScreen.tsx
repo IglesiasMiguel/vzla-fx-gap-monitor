@@ -194,6 +194,7 @@ export function DashboardScreen({ onShowDocumentation }: DashboardScreenProps) {
               currency="VES"
               className="flex-1"
               amountUsed={rates?.binanceAmountUsed}
+              amountUsedLabel={t.dashboard.amountUsed}
             />
           </View>
 
