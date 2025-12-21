@@ -1,6 +1,7 @@
 import { RatesResponse } from '@/types';
 
 const WORKER_BASE_URL = 'https://vzla-fx-gap-monitor.miguel-vzla-fx-monitor.workers.dev';
+const USD_AMOUNT = 25; // Monto en USD a convertir según tasa BCV
 
 interface BCVResponse {
   dollar: string;
@@ -40,7 +41,10 @@ async function fetchBCVRate(): Promise<number> {
   return Math.round(rate * 100) / 100;
 }
 
-async function fetchBinanceRate(): Promise<number> {
+async function fetchBinanceRate(bcvRate: number): Promise<{ rate: number; amountUsed: number }> {
+  // Calcular el monto en VES equivalente a 25 USD según la tasa BCV
+  const amountInVES = USD_AMOUNT * bcvRate;
+
   const payload = {
     fiat: 'VES',
     page: 1,
@@ -54,11 +58,11 @@ async function fetchBinanceRate(): Promise<number> {
     periods: [],
     additionalKycVerifyFilter: 0,
     publisherType: 'merchant',
-    payTypes: [],
+    payTypes: ['Pago Movil'], // Filtrar por método de pago "Pago Móvil"
     classifies: ['mass', 'profession', 'fiat_trade'],
     tradedWith: false,
     followed: false,
-    transAmount: '',
+    transAmount: amountInVES.toString(), // Filtrar por el monto calculado en VES
   };
 
   const response = await fetch('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search', {
@@ -84,7 +88,7 @@ async function fetchBinanceRate(): Promise<number> {
     throw new Error('Invalid Binance response');
   }
 
-  // Calculate weighted average of first 10 merchant offers
+  // Calculate weighted average of filtered merchant offers
   let totalPrice = 0;
   let totalQuantity = 0;
 
@@ -104,10 +108,16 @@ async function fetchBinanceRate(): Promise<number> {
 
   const averageRate = totalPrice / totalQuantity;
   // Bank rounding to 2 decimals
-  return Math.round(averageRate * 100) / 100;
+  return {
+    rate: Math.round(averageRate * 100) / 100,
+    amountUsed: Math.round(amountInVES * 100) / 100,
+  };
 }
 
-async function computeRates(bcv: number, binance: number): Promise<RatesResponse> {
+async function computeRates(
+  bcv: number,
+  binance: number
+): Promise<Omit<RatesResponse, 'binanceAmountUsed'>> {
   const response = await fetch(`${WORKER_BASE_URL}/api/compute`, {
     method: 'POST',
     headers: {
@@ -125,9 +135,18 @@ async function computeRates(bcv: number, binance: number): Promise<RatesResponse
 }
 
 export async function fetchRates(): Promise<RatesResponse> {
-  // Fetch both rates in parallel
-  const [bcv, binance] = await Promise.all([fetchBCVRate(), fetchBinanceRate()]);
+  // Primero obtener la tasa BCV
+  const bcv = await fetchBCVRate();
+
+  // Luego obtener la tasa de Binance con el filtrado adecuado usando la tasa BCV
+  const { rate: binance, amountUsed } = await fetchBinanceRate(bcv);
 
   // Compute gap metrics via Worker
-  return computeRates(bcv, binance);
+  const computedRates = await computeRates(bcv, binance);
+
+  // Agregar el monto usado a la respuesta
+  return {
+    ...computedRates,
+    binanceAmountUsed: amountUsed,
+  };
 }
