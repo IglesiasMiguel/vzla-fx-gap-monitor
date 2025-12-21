@@ -1,12 +1,17 @@
 import { View, Text } from 'react-native';
+import { Language } from '@/hooks/useLanguage';
+import { translations } from '@/hooks/useLanguage';
 
 interface GapIndicatorProps {
   value: number;
   mode: 'purchasing_power' | 'gap_spread';
   recommendation: 'BUY_BCV' | 'NEUTRAL' | 'SELL_USDT';
+  language: Language;
 }
 
-export function GapIndicator({ value, mode, recommendation }: GapIndicatorProps) {
+export function GapIndicator({ value, mode, recommendation, language }: GapIndicatorProps) {
+  const t = translations[language].gapIndicator;
+
   const getColorClass = () => {
     if (mode === 'purchasing_power') {
       if (value < 60) return 'text-green-600 dark:text-green-400'; // Good opportunity
@@ -23,18 +28,18 @@ export function GapIndicator({ value, mode, recommendation }: GapIndicatorProps)
   const getRecommendationText = () => {
     switch (recommendation) {
       case 'BUY_BCV':
-        return 'Good time to buy official dollar';
+        return t.goodTimeToBuy;
       case 'SELL_USDT':
-        return 'Rates are converging';
+        return t.ratesConverging;
       default:
-        return 'Monitor the market';
+        return t.monitorMarket;
     }
   };
 
   return (
     <View className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
       <Text className="text-slate-600 dark:text-slate-400 text-sm font-medium mb-2">
-        {mode === 'purchasing_power' ? 'Purchasing Power' : 'Gap Spread'}
+        {mode === 'purchasing_power' ? t.purchasingPower : t.gapSpread}
       </Text>
       <Text className={`text-4xl font-bold mb-2 ${getColorClass()}`}>{value.toFixed(2)}%</Text>
       <Text className="text-slate-500 dark:text-slate-400 text-xs">{getRecommendationText()}</Text>
