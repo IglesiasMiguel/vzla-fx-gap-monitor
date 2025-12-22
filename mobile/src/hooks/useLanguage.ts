@@ -21,6 +21,8 @@ export const translations = {
       now: 'Ahora',
       lessThanMinute: 'Menos de un minuto',
       inMinutes: (minutes: number) => `En ${minutes} minuto${minutes !== 1 ? 's' : ''}`,
+      amountUsed: 'Monto usado:',
+      officialRate: 'Tasa oficial',
     },
     gapIndicator: {
       purchasingPower: 'Poder de Compra',
@@ -59,6 +61,8 @@ export const translations = {
       now: 'Now',
       lessThanMinute: 'Less than a minute',
       inMinutes: (minutes: number) => `In ${minutes} minute${minutes !== 1 ? 's' : ''}`,
+      amountUsed: 'Amount used:',
+      officialRate: 'Official rate',
     },
     gapIndicator: {
       purchasingPower: 'Purchasing Power',

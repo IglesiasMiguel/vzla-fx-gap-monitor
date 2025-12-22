@@ -187,12 +187,15 @@ export function DashboardScreen({ onShowDocumentation }: DashboardScreenProps) {
               value={rates?.bcv ?? 0}
               currency="VES"
               className="flex-1"
+              officialRateLabel={t.dashboard.officialRate}
             />
             <RateCard
               label={t.dashboard.binanceRate}
               value={rates?.binance ?? 0}
               currency="VES"
               className="flex-1"
+              amountUsed={rates?.binanceAmountUsed}
+              amountUsedLabel={t.dashboard.amountUsed}
             />
           </View>
 

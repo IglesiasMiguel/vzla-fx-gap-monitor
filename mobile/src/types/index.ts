@@ -5,6 +5,7 @@ export interface RatesResponse {
   purchasing_power: number;
   recommendation: 'BUY_BCV' | 'NEUTRAL' | 'SELL_USDT';
   last_update: string;
+  binanceAmountUsed?: number; // Monto en VES usado para calcular la tasa (25 USD * tasa BCV)
 }
 
 export type DisplayMode = 'purchasing_power' | 'gap_spread';
