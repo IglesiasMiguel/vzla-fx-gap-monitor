@@ -187,6 +187,7 @@ export function DashboardScreen({ onShowDocumentation }: DashboardScreenProps) {
               value={rates?.bcv ?? 0}
               currency="VES"
               className="flex-1"
+              officialRateLabel={t.dashboard.officialRate}
             />
             <RateCard
               label={t.dashboard.binanceRate}
