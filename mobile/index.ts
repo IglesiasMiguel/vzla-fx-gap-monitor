@@ -6,8 +6,9 @@ try {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { registerWidgetTaskHandler } = require('react-native-android-widget');
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { GapWidget } = require('./src/widgets');
+  const { GapWidget, PurchasingPowerWidget } = require('./src/widgets');
   registerWidgetTaskHandler(GapWidget);
+  registerWidgetTaskHandler(PurchasingPowerWidget);
 } catch {
   // Ignore: running in Expo Go (no native widget runtime)
 }
