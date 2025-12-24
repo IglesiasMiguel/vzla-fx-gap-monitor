@@ -19,6 +19,17 @@ export async function saveLastRates(rates: RatesResponse): Promise<void> {
   try {
     await AsyncStorage.setItem(STORAGE_KEYS.LAST_RATES, JSON.stringify(rates));
     await AsyncStorage.setItem(STORAGE_KEYS.LAST_REFRESH_AT, Date.now().toString());
+
+    // Update widgets after saving data
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { requestWidgetUpdate } = require('react-native-android-widget');
+      await requestWidgetUpdate('GapWidget');
+      await requestWidgetUpdate('PurchasingPowerWidget');
+    } catch (widgetError) {
+      // Silently fail if widgets are not available (e.g., in Expo Go)
+      // This is expected and not an error condition
+    }
   } catch (error) {
     console.error('Error saving last rates:', error);
   }

@@ -36,7 +36,7 @@
               "name": "GapWidget",
               "label": "Vzla FX Monitor",
               "minWidth": "320dp",
-              "minHeight": "120dp",
+              "minHeight": "40dp",
               "updatePeriodMillis": 1800000,
               "description": "Monitor BCV and Binance exchange rates"
             },
@@ -44,7 +44,7 @@
               "name": "PurchasingPowerWidget",
               "label": "Vzla FX - Purchasing Power",
               "minWidth": "160dp",
-              "minHeight": "120dp",
+              "minHeight": "40dp",
               "updatePeriodMillis": 1800000,
               "description": "Display purchasing power percentage"
             }

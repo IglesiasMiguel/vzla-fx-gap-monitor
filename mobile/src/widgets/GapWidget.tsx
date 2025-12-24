@@ -26,38 +26,39 @@ export const GapWidget: WidgetTaskHandler = async ({ renderWidget }) => {
     <FlexWidget
       style={{
         flexDirection: 'column',
-        padding: 16,
+        padding: 8,
         backgroundColor: '#ffffff',
         borderRadius: 16,
       }}
+      clickAction="openApp"
     >
       <TextWidget
         text="Vzla FX Monitor"
-        style={{ fontSize: 12, color: '#64748b', marginBottom: 8 }}
+        style={{ fontSize: 10, color: '#64748b', marginBottom: 4 }}
       />
 
       <FlexWidget style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <FlexWidget style={{ flexDirection: 'column' }}>
-          <TextWidget text="BCV" style={{ fontSize: 10, color: '#94a3b8' }} />
+          <TextWidget text="BCV" style={{ fontSize: 9, color: '#94a3b8' }} />
           <TextWidget
             text={bcvText}
-            style={{ fontSize: 18, fontWeight: '700', color: '#0f172a' }}
+            style={{ fontSize: 14, fontWeight: '700', color: '#0f172a' }}
           />
         </FlexWidget>
 
         <FlexWidget style={{ flexDirection: 'column', alignItems: 'center' }}>
-          <TextWidget text="Binance" style={{ fontSize: 10, color: '#94a3b8' }} />
+          <TextWidget text="Binance" style={{ fontSize: 9, color: '#94a3b8' }} />
           <TextWidget
             text={binanceText}
-            style={{ fontSize: 18, fontWeight: '700', color: '#0f172a' }}
+            style={{ fontSize: 14, fontWeight: '700', color: '#0f172a' }}
           />
         </FlexWidget>
 
         <FlexWidget style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
-          <TextWidget text="Gap" style={{ fontSize: 10, color: '#94a3b8' }} />
+          <TextWidget text="Gap" style={{ fontSize: 9, color: '#94a3b8' }} />
           <TextWidget
             text={gapText}
-            style={{ fontSize: 18, fontWeight: '700', color: getGapColor() }}
+            style={{ fontSize: 14, fontWeight: '700', color: getGapColor() }}
           />
         </FlexWidget>
       </FlexWidget>
@@ -65,7 +66,7 @@ export const GapWidget: WidgetTaskHandler = async ({ renderWidget }) => {
       {!rates && (
         <TextWidget
           text="No data available. Open the app to fetch rates."
-          style={{ fontSize: 10, color: '#94a3b8', marginTop: 8, textAlign: 'center' }}
+          style={{ fontSize: 9, color: '#94a3b8', marginTop: 4, textAlign: 'center' }}
         />
       )}
     </FlexWidget>
