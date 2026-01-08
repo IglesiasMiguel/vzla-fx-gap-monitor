@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#364863"
     },
     "ios": {
       "supportsTablet": true
@@ -18,8 +18,8 @@
     "android": {
       "package": "com.vzlafxmonitor",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/splash-icon.png",
+        "backgroundColor": "#364863"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
@@ -35,16 +35,20 @@
             {
               "name": "GapWidget",
               "label": "Vzla FX Monitor",
-              "minWidth": "320dp",
+              "minWidth": "260dp",
               "minHeight": "40dp",
+              "targetCellWidth": 4,
+              "targetCellHeight": 1,
               "updatePeriodMillis": 1800000,
               "description": "Monitor BCV and Binance exchange rates"
             },
             {
               "name": "PurchasingPowerWidget",
               "label": "Vzla FX - Purchasing Power",
-              "minWidth": "160dp",
+              "minWidth": "120dp",
               "minHeight": "40dp",
+              "targetCellWidth": 2,
+              "targetCellHeight": 1,
               "updatePeriodMillis": 1800000,
               "description": "Display purchasing power percentage"
             }

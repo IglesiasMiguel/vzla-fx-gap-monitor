@@ -1,4 +1,5 @@
-import { getLastRates } from '@/utils/storage';
+import { getLastRates, saveLastRates } from '@/utils/storage';
+import { fetchRates } from '@/services/api';
 import { FlexWidget, TextWidget, type WidgetTaskHandler } from 'react-native-android-widget';
 
 /**
@@ -7,7 +8,16 @@ import { FlexWidget, TextWidget, type WidgetTaskHandler } from 'react-native-and
  * Note: Widgets can't be tested in Expo Go. This is meant for EAS/standalone builds.
  * The widget reads the last saved snapshot and never performs network calls.
  */
-export const PurchasingPowerWidget: WidgetTaskHandler = async ({ renderWidget }) => {
+export const PurchasingPowerWidget: WidgetTaskHandler = async ({ renderWidget, clickAction }) => {
+  if (clickAction === 'REFRESH') {
+    try {
+      const newRates = await fetchRates();
+      await saveLastRates(newRates);
+    } catch (error) {
+      // Fail silently
+    }
+  }
+
   const rates = await getLastRates();
 
   const purchasingPowerText = rates ? `${rates.purchasing_power.toFixed(1)}%` : '--%';
@@ -23,14 +33,15 @@ export const PurchasingPowerWidget: WidgetTaskHandler = async ({ renderWidget })
   renderWidget(
     <FlexWidget
       style={{
+        height: 'match_parent',
+        width: 'match_parent',
         flexDirection: 'column',
         padding: 8,
-        backgroundColor: '#ffffff',
         borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
       }}
-      clickAction="openApp"
+      clickAction="REFRESH"
     >
       <TextWidget
         text="Purchasing Power"
