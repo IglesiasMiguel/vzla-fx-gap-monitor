@@ -60,7 +60,7 @@ async function fetchBinanceRate(bcvRate: number): Promise<{ rate: number; amount
     filterType: 'tradable',
     periods: [],
     additionalKycVerifyFilter: 0,
-    publisherType: 'merchant',
+    publisherType: null,
     payTypes: ['PagoMovil'], // Filtrar por método de pago "Pago Móvil"
     classifies: ['mass', 'profession', 'fiat_trade'],
     tradedWith: false,
@@ -101,7 +101,7 @@ async function fetchBinanceRate(bcvRate: number): Promise<{ rate: number; amount
     }
 
     const data = (await response.json()) as BinanceResponse;
-    
+
     // DEBUG: Descomentar para ver logs de respuesta de Binance
     // console.log('[Binance] Response code:', data.code);
     // console.log('[Binance] Response message:', data.message);
@@ -113,7 +113,9 @@ async function fetchBinanceRate(bcvRate: number): Promise<{ rate: number; amount
       // console.error('[Binance] Invalid response code:', data.code);
       // console.error('[Binance] Error message:', data.message);
       // console.error('[Binance] Message detail:', data.messageDetail);
-      throw new Error(`Invalid Binance response: code=${data.code}, message=${data.message || 'Unknown error'}`);
+      throw new Error(
+        `Invalid Binance response: code=${data.code}, message=${data.message || 'Unknown error'}`
+      );
     }
 
     if (!data.data || data.data.length === 0) {
@@ -150,7 +152,7 @@ async function fetchBinanceRate(bcvRate: number): Promise<{ rate: number; amount
     const averageRate = totalPrice / totalQuantity;
     // DEBUG: Descomentar para ver logs de éxito de Binance
     // console.log('[Binance] Success - Average rate:', averageRate, 'Total quantity:', totalQuantity);
-    
+
     // Bank rounding to 2 decimals
     return {
       rate: Math.round(averageRate * 100) / 100,
@@ -190,7 +192,7 @@ export async function fetchRates(): Promise<RatesResponse> {
   try {
     // DEBUG: Descomentar para ver logs de debugging de rates
     // console.log('[Rates] Starting to fetch rates...');
-    
+
     // Primero obtener la tasa BCV
     // console.log('[Rates] Fetching BCV rate...');
     const bcv = await fetchBCVRate();
@@ -211,7 +213,7 @@ export async function fetchRates(): Promise<RatesResponse> {
       ...computedRates,
       binanceAmountUsed: amountUsed,
     };
-    
+
     // console.log('[Rates] Final rates result:', result);
     return result;
   } catch (error) {

@@ -39,28 +39,47 @@ export function WidgetPreview({ rates, language }: WidgetPreviewProps) {
   };
 
   return (
-    <View className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
-      <Text className="text-slate-600 dark:text-slate-400 text-xs mb-4">
-        {t.widgetPreview} ({t.howItWillLook})
-      </Text>
-      <View className="flex-row justify-between items-center">
-        <View className="flex-1">
-          <Text className="text-slate-500 dark:text-slate-400 text-xs mb-1">BCV</Text>
-          <Text className="text-lg font-bold text-slate-900 dark:text-white">
-            {Number(displayRates.bcv ?? 0).toFixed(2)}
-          </Text>
+    <View className="gap-4">
+      <View className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg">
+        <Text className="text-slate-600 dark:text-slate-400 text-xs mb-2 pb-2 border-b border-slate-200 dark:border-slate-700">
+          {t.widgetPreview} - 4x1 ({t.howItWillLook})
+        </Text>
+        <View className="flex-row justify-between items-center">
+          <View className="flex-1">
+            <Text className="text-slate-500 dark:text-slate-400 text-xs mb-1">BCV</Text>
+            <Text className="text-lg font-bold text-slate-900 dark:text-white">
+              {Number(displayRates.bcv ?? 0).toFixed(2)}
+            </Text>
+          </View>
+          <View className="flex-1 items-center">
+            <Text className="text-slate-500 dark:text-slate-400 text-xs mb-1">Binance</Text>
+            <Text className="text-lg font-bold text-slate-900 dark:text-white">
+              {Number(displayRates.binance ?? 0).toFixed(2)}
+            </Text>
+          </View>
+          <View className="flex-1 items-end">
+            <Text className="text-slate-500 dark:text-slate-400 text-xs mb-1">Gap</Text>
+            <Text className={`text-lg font-bold ${getColorClass()}`}>
+              {Number(displayRates.purchasing_power ?? 0).toFixed(1)}%
+            </Text>
+          </View>
         </View>
-        <View className="flex-1 items-center">
-          <Text className="text-slate-500 dark:text-slate-400 text-xs mb-1">Binance</Text>
-          <Text className="text-lg font-bold text-slate-900 dark:text-white">
-            {Number(displayRates.binance ?? 0).toFixed(2)}
+      </View>
+
+      {/* Widget 2x1 con ancho limitado */}
+      <View className="items-start">
+        <View className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-lg w-[180px]">
+          <Text className="text-slate-600 dark:text-slate-400 text-xs mb-2 pb-2 border-b border-slate-200 dark:border-slate-700">
+            {t.widgetPreview} - 2x1 ({t.howItWillLook})
           </Text>
-        </View>
-        <View className="flex-1 items-end">
-          <Text className="text-slate-500 dark:text-slate-400 text-xs mb-1">Gap</Text>
-          <Text className={`text-lg font-bold ${getColorClass()}`}>
-            {Number(displayRates.purchasing_power ?? 0).toFixed(1)}%
-          </Text>
+          <View className="items-center justify-center py-2">
+            <Text className="text-slate-500 dark:text-slate-400 text-[10px] mb-1">
+              Purchasing Power
+            </Text>
+            <Text className={`text-2xl font-bold ${getColorClass()}`}>
+              {Number(displayRates.purchasing_power ?? 0).toFixed(1)}%
+            </Text>
+          </View>
         </View>
       </View>
     </View>

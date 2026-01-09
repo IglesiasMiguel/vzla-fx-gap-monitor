@@ -12,7 +12,6 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { RateCard } from './RateCard';
 import { GapIndicator } from './GapIndicator';
 import { ModeSelector } from './ModeSelector';
-import { WidgetPreview } from './WidgetPreview';
 import { getDisplayMode, saveDisplayMode, getLastRefreshAt } from '@/utils/storage';
 import { DisplayMode } from '@/types';
 
@@ -111,7 +110,13 @@ export function DashboardScreen({ onShowDocumentation }: DashboardScreenProps) {
     >
       <View className="p-4 pt-12">
         <View className="flex-row items-center justify-between mb-1">
-          <Text className="text-3xl font-bold text-slate-900 dark:text-white">Vzla FX Monitor</Text>
+          <Text
+            className="text-3xl font-bold text-slate-900 dark:text-white flex-1 mr-2"
+            numberOfLines={1}
+            adjustsFontSizeToFit
+          >
+            Vzla FX Monitor
+          </Text>
           <View className="flex-row gap-2 items-center">
             {/* Language Selector */}
             <View className="flex-row gap-1 bg-slate-100 dark:bg-slate-700 rounded-lg p-1">
@@ -211,8 +216,6 @@ export function DashboardScreen({ onShowDocumentation }: DashboardScreenProps) {
             onModeChange={handleModeChange}
             language={language}
           />
-
-          <WidgetPreview rates={rates} language={language} />
         </View>
       </View>
     </ScrollView>
