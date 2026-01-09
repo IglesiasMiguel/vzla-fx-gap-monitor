@@ -7,8 +7,18 @@ try {
   const { registerWidgetTaskHandler } = require('react-native-android-widget');
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { GapWidget, PurchasingPowerWidget } = require('./src/widgets');
-  registerWidgetTaskHandler(GapWidget, 'GapWidget');
-  registerWidgetTaskHandler(PurchasingPowerWidget, 'PurchasingPowerWidget');
+
+  registerWidgetTaskHandler(async (props: any) => {
+    const { widgetInfo } = props;
+    switch (widgetInfo.widgetName) {
+      case 'GapWidget':
+        return GapWidget(props);
+      case 'PurchasingPowerWidget':
+        return PurchasingPowerWidget(props);
+      default:
+        console.warn(`Unknown widget: ${widgetInfo.widgetName}`);
+    }
+  });
 } catch {
   // Ignore: running in Expo Go (no native widget runtime)
 }

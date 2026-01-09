@@ -1,4 +1,4 @@
-import { getLastRates, saveLastRates } from '@/utils/storage';
+import { getLastRates, saveLastRates, getLanguage } from '@/utils/storage';
 import { fetchRates } from '@/services/api';
 import { FlexWidget, TextWidget, type WidgetTaskHandler } from 'react-native-android-widget';
 
@@ -11,6 +11,7 @@ import { FlexWidget, TextWidget, type WidgetTaskHandler } from 'react-native-and
 const renderWidgetUI = (
   renderWidget: (widget: React.ReactElement) => void,
   rates: { purchasing_power: number } | null,
+  title: string,
   isLoading: boolean = false
 ) => {
   const purchasingPowerText = rates ? `${rates.purchasing_power.toFixed(1)}%` : '--%';
@@ -24,7 +25,7 @@ const renderWidgetUI = (
     return '#f59e0b'; // Yellow for neutral
   };
 
-  const titleText = isLoading ? 'Refreshing...' : 'Purchasing Power';
+  const titleText = isLoading ? 'Refreshing...' : title;
 
   renderWidget(
     <FlexWidget
@@ -40,7 +41,7 @@ const renderWidgetUI = (
       }}
       clickAction="REFRESH"
     >
-      <TextWidget text={titleText} style={{ fontSize: 10, color: '#d1d5db', marginBottom: 4 }} />
+      <TextWidget text={titleText} style={{ fontSize: 12, color: '#d1d5db', marginBottom: 4 }} />
 
       <TextWidget
         text={isLoading ? '...' : purchasingPowerText}
@@ -63,10 +64,12 @@ const renderWidgetUI = (
 
 export const PurchasingPowerWidget: WidgetTaskHandler = async ({ renderWidget, clickAction }) => {
   const currentRates = await getLastRates();
+  const language = await getLanguage();
+  const title = language === 'es' ? 'Poder de Compra' : 'Purchasing Power';
 
   if (clickAction === 'REFRESH') {
     // 1. Show loading state immediately with current data (if any)
-    renderWidgetUI(renderWidget, currentRates, true);
+    renderWidgetUI(renderWidget, currentRates, title, true);
 
     try {
       // 2. Perform fetch
@@ -74,13 +77,13 @@ export const PurchasingPowerWidget: WidgetTaskHandler = async ({ renderWidget, c
       await saveLastRates(newRates);
 
       // 3. Show success state with new data
-      renderWidgetUI(renderWidget, newRates, false);
+      renderWidgetUI(renderWidget, newRates, title, false);
     } catch (error) {
       // 4. On error, revert to showing old data (or current state) without loading indicator
-      renderWidgetUI(renderWidget, currentRates, false);
+      renderWidgetUI(renderWidget, currentRates, title, false);
     }
   } else {
     // Initial load / resize / update
-    renderWidgetUI(renderWidget, currentRates, false);
+    renderWidgetUI(renderWidget, currentRates, title, false);
   }
 };
